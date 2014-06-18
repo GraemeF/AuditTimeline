@@ -3,15 +3,17 @@ var _ = require('lodash');
 var moment = require('moment');
 
 var createVisDataItem = function (item) {
+  var duration = item.Event.ElapsedMilliseconds || 0;
   var start = moment(item.CreatedDateTime)
-      .subtract(item.Event.ElapsedMilliseconds, 'milliseconds');
+      .subtract(duration, 'milliseconds');
 
   return {
     id: item._id,
     group: item.Context.RequestId,
-    content: item.Event._t,
+    content: item.Event._t || item.Event.type,
     start: start,
-    end: item.CreatedDateTime
+    end: item.CreatedDateTime,
+    type: duration > 0 ? 'rangeoverflow' : 'point'
   };
 };
 
@@ -24,7 +26,7 @@ exports.list = function (req, res) {
 
     var collection = db.collection(process.env.AUDIT_MONGODB_COLLECTION);
     return collection
-        .find({'Event.ElapsedMilliseconds': {$exists: true}})
+        .find()
         .toArray(function (err, items) {
           if (err) {
             return res.send(500, err);
