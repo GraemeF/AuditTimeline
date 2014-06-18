@@ -31,5 +31,14 @@ $.getJSON("/timeline", function (data) {
         };
       })
       .valueOf());
-  timeline.fit();
+
+  var events = _.indexBy(data, '_id');
+
+  function onSelect(properties) {
+    console.log('Selected:', _(properties.items).map(function (id) {
+      return events[id];
+    }).valueOf());
+  }
+
+  timeline.on('select', onSelect);
 });
