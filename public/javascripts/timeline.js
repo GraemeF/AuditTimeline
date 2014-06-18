@@ -9,7 +9,7 @@ var createVisDataItem = function (item) {
   return {
     id: item._id,
     group: item.Context.RequestId,
-    content: item.Event._t || item.Event.type,
+    content: item.Event._t || item.Event.Type,
     start: start,
     end: item.CreatedDateTime,
     type: duration > 0 ? 'rangeoverflow' : 'point'
