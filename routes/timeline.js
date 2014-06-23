@@ -18,9 +18,10 @@ exports.list = function (req, res) {
             return res.send(500, err);
           }
 
-          return res.json(_(items).map(function (item) {
-            return _.omit(item, 'StackTrace');
-          }).valueOf());
+          return res.json(_(items).chain()
+              .map(function (item) {
+                return _.omit(item, 'StackTrace');
+              }).valueOf());
         });
   });
 
