@@ -27,7 +27,7 @@ $.getJSON("/timeline", function (data) {
       .map(function (g) {
         return {
           id: g.Context.RequestId,
-          content: g.Context.Request.Url || g.Context.RequestedUrl
+          content: g.Context.RequestedUrl || g.Context.Request.Url
         };
       })
       .valueOf());
