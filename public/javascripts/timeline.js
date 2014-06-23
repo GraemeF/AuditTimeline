@@ -3,16 +3,16 @@ var container = document.getElementById('mytimeline');
 
 var createVisDataItem = function (item) {
   var duration = item.Event.ElapsedMilliseconds || 0;
-  var start = moment(item.CreatedDateTime)
-      .subtract(duration, 'milliseconds');
+  var end = moment(item.CreatedDateTime);
+  var start = end.clone().subtract(duration, 'milliseconds');
 
   return {
     id: item._id,
     group: item.Context.RequestId,
     content: item.Event._t || item.Event.Type,
-    start: start,
-    end: item.CreatedDateTime,
-    type: duration > 0 ? 'rangeoverflow' : 'point'
+    start: start.valueOf(),
+    end: end.valueOf(),
+    type: duration === 0 ? 'point' : 'rangeoverflow'
   };
 };
 
